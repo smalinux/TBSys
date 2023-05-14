@@ -1,7 +1,9 @@
 #include <sqlite3.h>
+#include <stdarg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
 
 #include "log.h"
 
@@ -12,119 +14,137 @@ typedef struct Record {
    char complain[502]; // Complain
 } Record;
 
-// REMOVEME Print SQLite C version
-void tbs_sqlite3_version(void) {
-   printf("%s\n", sqlite3_libversion());
-}
+static struct config {
+   char db_name[10];
+} config = {
+   .db_name = "tbsys.db",
+};
 
-// FIXME move these functions to .h & doc them
 void tbs_welcome_mgs(void);
 void tbs_help_mgs(void);
+void tbs_print_options_menu(void);
 
 sqlite3* tbs_db_connect(void);
 void tbs_db_disconnect(sqlite3 *db);
 
 int tbs_db_bill_new(sqlite3 *db);
-int tbs_db_bill_add(sqlite3 *db, Record *record); // FIXME add param Table
-int tbs_db_bill_remove(sqlite3 *db, int id); //FIXME add param Table
+int tbs_db_bill_add(sqlite3 *db, Record *record);
+int tbs_db_bill_remove(sqlite3 *db, int id);
 int tbs_db_bill_select_all(sqlite3 *db);
-int tbs_db_bill_complain(sqlite3 *db, int id, char *complain); // FIXME add param Table
+int tbs_db_bill_complain(sqlite3 *db, int id, char *complain);
 int tbs_db_bill_search(sqlite3 *db, char *keyword);
-int tbs_db_bill_modify(sqlite3 *db, int id); // FIXME add param Table
+int tbs_db_bill_modify(sqlite3 *db, int id);
+
+void tbs_print(const char *format, ...);
 
 
-int main(void) { // FIXME argc & argv
+int main(int argc, char **argv) { // FIXME argc & argv
 
-   char c;
-   sqlite3 *db; // FIXME close it
+   char input;
+   sqlite3 *db;
    Record record;
 
    tbs_welcome_mgs();
    tbs_help_mgs();
 
-   // Connect db
+   // Open Connect db
    db = tbs_db_connect();
+   log_info("DB conection opened");
+
+   // Create DB Table: Bill
    tbs_db_bill_new(db);
+   log_info("DB Table Bill is ready");
 
+   tbs_print_options_menu();
+   scanf(" %c",&input);
 
-   printf("Hit (l/s/d/a/m/c), h for help or q for exit: ");
-   scanf(" %c",&c);
+   /*
+    * The main loop
+    */
+   while (input != 'q') {
+      if (input == 'a') { // 'a' key
+         tbs_print("> Add new record...\n");
 
-   while (c != 'q') { // main loop
-      // Sorted alphabetically
-      if (c == 'a') {
-         printf("> Add new record...\n");
-
-         printf("> Name: ");
+         tbs_print("> Name: ");
          scanf(" %s", record.name);
-         printf("> Phone: ");
+         tbs_print("> Phone: ");
+         // TODO code validation for logical phone inputs
          scanf(" %s", record.phone);
-         printf("> price: ");
+         tbs_print("> price: ");
          scanf(" %lf", &record.price);
-         //printf("=======================================\n");
-         //printf("%s, %s, %f\n", record.name, record.phone, record.price);
-         //printf("=======================================\n");
 
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
          tbs_db_bill_add(db, &record);
-      } else if (c == 'c') {
+         log_info("%s() function called", __func__);
+      } else if (input == 'c') { // 'c' key
          int id;
          char complain[500];
-         printf("> ID: ");
+         tbs_print("> ID: ");
          scanf(" %d", &id);
-         printf("> Complain (max 500 char): ");
+         tbs_print("> Complain (max 500 char): ");
          scanf(" %500[^\n]", complain); // FIXME 500 hardcode
          tbs_db_bill_complain(db, id, complain);
+         log_info("%s() function called", __func__);
          // TODO Print pretty table in terminal (add pretty table func)
-      } else if (c == 'd') {
+      } else if (input == 'd') { // 'd' key
          int id = 0;
-         printf("> Delete record... id: ");
+         tbs_print("> Delete record... id: ");
          scanf(" %d", &id);
          tbs_db_bill_remove(db, id);
+         log_info("%s() function called", __func__);
 
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
-      } else if (c == 'h') {
+      } else if (input == 'h') { // 'h' key
          tbs_help_mgs();
-      } else if (c == 'l') {
+      } else if (input == 'l') { // 'l' key
          tbs_db_bill_select_all(db);
+         log_info("%s() function called", __func__);
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
-      } else if (c == 'm') {
+      } else if (input == 'm') { // 'm' key
          int id = 0;
-         printf("> Modify record... id: ");
+         tbs_print("> Modify record... id: ");
          scanf(" %d", &id);
          tbs_db_bill_modify(db, id);
-      } else if (c == 's') {
-         printf("> Search by: ");
+         log_info("%s() function called", __func__);
+      } else if (input == 's') { // 's' key
+         tbs_print("> Search by: ");
          char keyword[20];
          scanf(" %s", keyword);
          tbs_db_bill_search(db, keyword);
+         log_info("%s() function called", __func__);
       } else {
-         printf("Option (%c) not exist!\n", c);
+         tbs_print("Option (%c) not exist!\n", input);
          tbs_help_mgs();
       }
 
-      printf("Hit (l/s/d/a/m/c), h for help or q for exit: ");
-      scanf(" %c", &c);
-
+      tbs_print_options_menu();
+      scanf(" %c", &input);
    }
 
+   // Close DB Connect
    tbs_db_disconnect(db);
+   log_info("DB conection closed");
+
    return 0;
 }
 
 void tbs_welcome_mgs(void) {
-   printf(
-         " ===============================================\n"
-         " Welcome .......\n" // FIXME fancy ascii mgs
-         " ===============================================\n"
+   tbs_print(
+         "  _____  ____  ____\n"
+         " |_   _|| __ )/ ___|  _   _  ___\n"
+         "   | |  |  _ \\\\___ \\ | | | |/ __|\n"
+         "   | |  | |_) |___) || |_| |\\__ \\\n"
+         "   |_|  |____/|____/  \\__, ||___/\n"
+         "                      |___/\n"
+         "\n"
          );
 }
 
 void tbs_help_mgs(void) { // FIXME Is this optimal? like Htop?
-   printf(
+   tbs_print(
          "l - list\n"
          "m - modify\n"
          "s - search\n"
@@ -135,9 +155,7 @@ void tbs_help_mgs(void) { // FIXME Is this optimal? like Htop?
 sqlite3* tbs_db_connect(void) {
    sqlite3 *db;
    char *err_msg = 0;
-
-   // FIXME: move db name as const at the top of file
-   int rc = sqlite3_open("tbsys.db", &db);
+   int rc = sqlite3_open(config.db_name, &db);
 
    if (rc != SQLITE_OK) {
       log_error("SQL error: %s: %s\n", __func__, sqlite3_errmsg(db));
@@ -147,7 +165,8 @@ sqlite3* tbs_db_connect(void) {
       return NULL;
    }
 
-   // FIXME Logging: connected successfully
+   log_info("DB connection successfully opened");
+
    return db;
 }
 
@@ -164,11 +183,6 @@ int tbs_db_bill_new(sqlite3 *db) {
 
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
-   // SQLite C last inserted row id
-   // REMOVEME rm this block
-   int last_id = sqlite3_last_insert_rowid(db);
-   printf("The last Id of the inserted row is %d\n", last_id);
-
    if (rc != SQLITE_OK ) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
@@ -180,7 +194,6 @@ int tbs_db_bill_new(sqlite3 *db) {
    return 0;
 }
 
-// FIXME add param for Table name
 int tbs_db_bill_add(sqlite3 *db, Record *record) {
    char *err_msg = 0;
    int rc;
@@ -190,18 +203,14 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
          record->name,
          record->phone,
          record->price);
-   //printf("-----------------------------------\n");
-   //printf("%s", sql);
-   //printf("-----------------------------------\n");
-   //
-   //char *sql = "INSERT INTO Bill (Name, Phone, Price) VALUES('Mercedes', 01123456789, 57127);";
 
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
-   // SQLite C last inserted row id
-   // REMOVEME rm this block
+   // Print the last Id added to DB
    int last_id = sqlite3_last_insert_rowid(db);
-   printf("The last Id of the inserted row is %d\n", last_id);
+   log_info("The last Id of the inserted row is %d\n", last_id);
+
+   // FIXME print the info of last added item here
 
    if (rc != SQLITE_OK ) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
@@ -214,12 +223,12 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
    return 0;
 }
 
-int tbs_db_bill_remove(sqlite3 *db, int id) { //FIXME add param Table
+int tbs_db_bill_remove(sqlite3 *db, int id) {
    char *err_msg = 0;
    int rc;
    char sql[500];
 
-   sprintf(sql, "DELETE FROM Bill WHERE id=%d;", id); // FIXME Bill hard coded, param?
+   sprintf(sql, "DELETE FROM Bill WHERE id=%d;", id);
 
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -237,9 +246,9 @@ int tbs_db_bill_remove(sqlite3 *db, int id) { //FIXME add param Table
 static int select_all_callback(void *NotUsed, int argc, char **argv, char **azColName) {
 
    for (int i = 0; i < argc; i++) {
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      tbs_print("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
    }
-   printf("\n");
+   tbs_print("\n");
 
    return 0;
 }
@@ -247,7 +256,7 @@ static int select_all_callback(void *NotUsed, int argc, char **argv, char **azCo
 int tbs_db_bill_select_all(sqlite3 *db) {
    char *err_msg = 0;
    int rc;
-   char *sql = "SELECT * FROM Bill"; // FIXME add MACRO Bill
+   char *sql = "SELECT * FROM Bill";
 
    rc = sqlite3_exec(db, sql, select_all_callback, 0, &err_msg);
 
@@ -287,9 +296,9 @@ int tbs_db_bill_complain(sqlite3 *db, int id, char* complain) {
 static int search_callback(void *NotUsed, int argc, char **argv, char **azColName) {
 
    for (int i = 0; i < argc; i++) {
-      printf("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      tbs_print("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
    }
-   printf("\n");
+   tbs_print("\n");
 
    return 0;
 }
@@ -315,14 +324,14 @@ int tbs_db_bill_search(sqlite3 *db, char* keyword) {
    return 0;
 }
 
-// get the new values
-static int modify_view_callback(void *userdate, int argc, char **argv, char **azColName) {
+// catch the new values from user and send it back to tbs_db_bill_modify via userdata
+static int modify_view_callback(void *userdata, int argc, char **argv, char **azColName) {
    // Retrieve the user data pointer
-   Record *data = (Record *)userdate;
+   Record *data = (Record *)userdata;
 
    // TODO accept empty input using Enter key.
    for (int i = 0; i < argc; i++) {
-      printf("%s (%s):\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      tbs_print("%s (%s):\n", azColName[i], argv[i] ? argv[i] : "NULL");
       if ((strcmp(azColName[i], "Name") == 0)) {
          scanf("%s", data->name);
       } else if ((strcmp(azColName[i], "Phone") == 0)) {
@@ -343,7 +352,7 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
    char sql[1000];
    Record record;
 
-   sprintf(sql, "SELECT * FROM Bill WHERE id = %d;", id); // FIXME add MACRO Bill
+   sprintf(sql, "SELECT * FROM Bill WHERE id = %d;", id);
 
    rc = sqlite3_exec(db, sql, modify_view_callback, &record, &err_msg);
 
@@ -375,4 +384,18 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
    }
 
    return 0;
+}
+
+// use tbs_print for consistance instead of printf
+void tbs_print(const char *format, ...) {
+   va_list args;
+   va_start(args, format);
+
+   vprintf(format, args);
+
+   va_end(args);
+}
+
+void tbs_print_options_menu(void) {
+   tbs_print("Hit (a/c/d/h/m/s), h for help or q for exit: ");
 }
