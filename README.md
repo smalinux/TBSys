@@ -8,6 +8,13 @@ apt install sqlite3
 apt install libsqlite3-dev
 ```
 
+
+## TODO
+
+- [ ] Add `rxi/log` as git subtree
+- [ ] Add unit test to check if `rxi/log` is working
+- [ ] Add log_info() to improve the code usability
+
 <!--
 
 `

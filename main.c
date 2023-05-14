@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "log.h"
+
 typedef struct Record {
    char name[50];      // Client name
    char phone[20];     // Phone number
@@ -21,6 +23,7 @@ void tbs_help_mgs(void);
 
 sqlite3* tbs_db_connect(void);
 void tbs_db_disconnect(sqlite3 *db);
+
 int tbs_db_bill_new(sqlite3 *db);
 int tbs_db_bill_add(sqlite3 *db, Record *record); // FIXME add param Table
 int tbs_db_bill_remove(sqlite3 *db, int id); //FIXME add param Table
@@ -137,11 +140,10 @@ sqlite3* tbs_db_connect(void) {
    int rc = sqlite3_open("tbsys.db", &db);
 
    if (rc != SQLITE_OK) {
+      log_error("SQL error: %s: %s\n", __func__, sqlite3_errmsg(db));
 
-      fprintf(stderr, "TBSys: Cannot open database: %s\n", sqlite3_errmsg(db));
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return NULL;
    }
 
@@ -168,12 +170,10 @@ int tbs_db_bill_new(sqlite3 *db) {
    printf("The last Id of the inserted row is %d\n", last_id);
 
    if (rc != SQLITE_OK ) {
-      // FIXME Logging system
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -204,12 +204,10 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
    printf("The last Id of the inserted row is %d\n", last_id);
 
    if (rc != SQLITE_OK ) {
-      // FIXME Logging system
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -226,12 +224,10 @@ int tbs_db_bill_remove(sqlite3 *db, int id) { //FIXME add param Table
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      // FIXME Logging system
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -256,11 +252,10 @@ int tbs_db_bill_select_all(sqlite3 *db) {
    rc = sqlite3_exec(db, sql, select_all_callback, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -279,12 +274,10 @@ int tbs_db_bill_complain(sqlite3 *db, int id, char* complain) {
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      // FIXME Logging system
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -312,11 +305,10 @@ int tbs_db_bill_search(sqlite3 *db, char* keyword) {
    rc = sqlite3_exec(db, sql, search_callback, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
-
       return 1;
    }
 
@@ -356,7 +348,7 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
    rc = sqlite3_exec(db, sql, modify_view_callback, &record, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);
@@ -374,8 +366,7 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
-      // FIXME Logging system
-      fprintf(stderr, "TBSys: SQL error: %s: %s\n", __func__, err_msg);
+      log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
       sqlite3_close(db);

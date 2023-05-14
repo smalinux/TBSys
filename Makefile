@@ -1,7 +1,7 @@
 CC = gcc
-CFLAGS = -std=c99
+CFLAGS = -DLOG_USE_COLOR -std=c99
 CLIB = -lsqlite3
-OBJ = main.o
+OBJ = main.o log.o
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
