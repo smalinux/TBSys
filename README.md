@@ -10,10 +10,12 @@ apt install libsqlite3-dev
 
 
 ## TODO
-
+- [ ] Use [IWYU](https://github.com/include-what-you-use/include-what-you-use) [Leave it for now!]
 - [ ] Add `rxi/log` as git subtree
 - [ ] Add unit test to check if `rxi/log` is working
-- [ ] Add log_info() to improve the code usability
+- [x] Add log_info() to improve the code usability
+- [ ] Split `tbsys.[ch]` to more logical modules. (Leave it for now!) db.ch, message.ch, etc
+- [ ] Add GitHub actions for CI/CD
 
 <!--
 
