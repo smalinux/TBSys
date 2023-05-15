@@ -17,9 +17,11 @@ of this license document, but changing it is not allowed.
 
 
 static struct config {
-   char db_name[10];
+   char db_name[10];  /* DB Name */
+   bool db_connected; /* Keep track the status of conn open/close? */
 } config = {
    .db_name = "tbsys.db",
+   .db_connected = 0,
 };
 
 int main(int argc, char **argv) { // TODO argc & argv support
@@ -54,7 +56,7 @@ int main(int argc, char **argv) { // TODO argc & argv support
          tbs_print("> Name: ");
          scanf(" %50[^\n]", record.name);
          tbs_print("> Phone: ");
-         // TODO code validation for logical phone inputs
+         // TODO code validation for logical phone inputs (Leave it now)
          scanf(" %s", record.phone);
          tbs_print("> price: ");
          scanf(" %lf", &record.price);

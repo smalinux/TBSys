@@ -29,7 +29,7 @@ void tbs_welcome_mgs(void) {
          );
 }
 
-void tbs_help_mgs(void) { // FIXME Is this optimal? like Htop?
+void tbs_help_mgs(void) {
    tbs_print(
          "(a) Add new record\n"
          "(c) Add a complain\n"
