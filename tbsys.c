@@ -253,7 +253,7 @@ int tbs_db_bill_complain(sqlite3* db, int id, char* complain) {
 static int search_callback(void* NotUsed, int argc, char** argv, char** azColName) {
 
    for (int i = 0; i < argc; i++) {
-      tbs_print("%s = %s\n", azColName[i], argv[i] ? argv[i] : "NULL");
+      tbs_print("%s = %s\t ", azColName[i], argv[i] ? argv[i] : "NULL");
    }
    tbs_print("\n");
 
