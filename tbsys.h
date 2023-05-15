@@ -15,10 +15,13 @@ of this license document, but changing it is not allowed.
 #include <string.h>
 
 typedef struct Record {
-   char name[56];      // Client name - 50
-   char phone[24];     // Phone number - 20
-   double price;       // Price
-   char complain[502]; // Complain - 500
+   int id;               // Recodrd id
+   char id_buff[100];    // used for Convert & print
+   char name[56];        // Client name - 50
+   char phone[24];       // Phone number - 20
+   double price;         // Price
+   char price_buff[100]; // used for Convert & print
+   char complain[502];   // Complain - 500
 } Record;
 
 
@@ -39,5 +42,6 @@ int tbs_db_bill_modify(sqlite3 *db, int id);
 
 void tbs_print(const char *format, ...);
 void tbs_print_table_onerow(int id, Record *record);
+void tbs_print_table(int total_rows, Record *records);
 
 #endif
