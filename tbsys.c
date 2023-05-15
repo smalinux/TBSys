@@ -1,11 +1,17 @@
-/*
-tbsys - tbsys.c
-(C) 2023 Sohaib Mohamed
-Released under the GNU GPLv2+,
-Everyone is permitted to copy and distribute verbatim copies
-of this license document, but changing it is not allowed.
-*/
-
+/** 
+ * @file tbsys.c
+ * @author Sohaib Mohamed (sohaib.amhmd@gmail.com)
+ * @brief TBsys.c file
+ * @version 0.1
+ * @date 2023-05-15
+ * @page this file is tbsys.c
+ * 
+ * @copyright Copyright (c) 2023
+ * Released under the GNU GPLv2+,
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+ * 
+ */
 #include <sqlite3.h>
 #include <stdarg.h>
 #include <stdio.h>

@@ -1,11 +1,17 @@
-/*
-tbsys - main.c
-(C) 2023 Sohaib Mohamed
-Released under the GNU GPLv2+,
-Everyone is permitted to copy and distribute verbatim copies
-of this license document, but changing it is not allowed.
-*/
-
+/** 
+ * @file main.c
+ * @author Sohaib Mohamed (sohaib.amhmd@gmail.com)
+ * @brief Main.c file
+ * @version 0.1
+ * @date 2023-05-15
+ * @page this file is main.c
+ * 
+ * @copyright Copyright (c) 2023
+ * Released under the GNU GPLv2+,
+ * Everyone is permitted to copy and distribute verbatim copies
+ * of this license document, but changing it is not allowed.
+ * 
+ */
 #include <sqlite3.h>
 #include <stdarg.h>
 #include <stdio.h>
@@ -87,7 +93,7 @@ int main(int argc, char **argv) { // TODO argc & argv support
 
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
-
+         
          /*
           * (h) help message
           */

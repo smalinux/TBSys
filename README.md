@@ -8,6 +8,11 @@ apt install sqlite3
 apt install libsqlite3-dev
 ```
 
+Generate docs
+``` bash
+doxygen
+```
+
 
 ## TODO
 - [ ] Use [IWYU](https://github.com/include-what-you-use/include-what-you-use) [Leave it for now!]
