@@ -16,6 +16,7 @@ apt install libsqlite3-dev
 - [x] Add log_info() to improve the code usability
 - [ ] Split `tbsys.[ch]` to more logical modules. (Leave it for now!) db.ch, message.ch, etc
 - [ ] Add GitHub actions for CI/CD
+- [ ] Support argc & argv to invoke `tbsys` as a script
 
 <!--
 

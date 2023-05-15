@@ -24,27 +24,30 @@ void tbs_welcome_mgs(void) {
          "   | |  | |_) |___) || |_| |\\__ \\\n"
          "   |_|  |____/|____/  \\__, ||___/\n"
          "                      |___/\n"
-         "Telecom Billing System...\n"
+         " Telecom Billing System...\n"
          "\n"
          );
 }
 
 void tbs_help_mgs(void) { // FIXME Is this optimal? like Htop?
    tbs_print(
-         "a - (a) add new record\n"
-         "c - (c) add a complain\n"
-         "d - (d) delete a record\n"
-         "h - (h) help. prints this message\n"
-         "l - (l) list all record\n"
-         "m - (m) modify a record\n"
-         "s - (s) search by name\n"
+         "(a) Add new record\n"
+         "(c) Add a complain\n"
+         "(d) Delete a record\n"
+         "(h) Help. prints this message\n"
+         "(l) List all record\n"
+         "(m) Modify a record\n"
+         "(s) Search by name\n"
          );
+   log_info("%s() function called", __func__);
 }
 
 sqlite3* tbs_db_connect(char *db_name) {
    sqlite3 *db;
    char *err_msg = 0;
    int rc = sqlite3_open(db_name, &db);
+
+   log_info("%s() function called", __func__);
 
    if (rc != SQLITE_OK) {
       log_error("SQL error: %s: %s\n", __func__, sqlite3_errmsg(db));
@@ -60,6 +63,7 @@ sqlite3* tbs_db_connect(char *db_name) {
 }
 
 void tbs_db_disconnect(sqlite3* db) {
+   log_info("%s() function called", __func__);
    sqlite3_close(db);
 }
 
@@ -69,6 +73,8 @@ int tbs_db_bill_new(sqlite3 *db) {
    int rc;
    char *sql =
       "CREATE TABLE IF NOT EXISTS Bill(Id INTEGER PRIMARY KEY AUTOINCREMENT, Name TEXT, Phone varchar(15) ,Price INT, Complain TEXT);";
+
+   log_info("%s() function called", __func__);
 
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
@@ -87,6 +93,8 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
    char *err_msg = 0;
    int rc;
    char sql[500];
+
+   log_info("%s() function called", __func__);
 
    sprintf(sql, "INSERT INTO Bill (Name, Phone, Price) VALUES('%s', '%s', %f);",
          record->name,
@@ -116,6 +124,8 @@ int tbs_db_bill_remove(sqlite3 *db, int id) {
    char *err_msg = 0;
    int rc;
    char sql[500];
+
+   log_info("%s() function called", __func__);
 
    sprintf(sql, "DELETE FROM Bill WHERE id=%d;", id);
 
@@ -147,6 +157,8 @@ int tbs_db_bill_select_all(sqlite3 *db) {
    int rc;
    char *sql = "SELECT * FROM Bill";
 
+   log_info("%s() function called", __func__);
+
    rc = sqlite3_exec(db, sql, select_all_callback, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
@@ -164,6 +176,8 @@ int tbs_db_bill_complain(sqlite3 *db, int id, char* complain) {
    char *err_msg = 0;
    int rc;
    char sql[500];
+
+   log_info("%s() function called", __func__);
 
    sprintf(sql, "UPDATE Bill SET Complain = '%s' WHERE id = %d;",
          complain,
@@ -197,6 +211,8 @@ int tbs_db_bill_search(sqlite3 *db, char* keyword) {
    char *err_msg = 0;
    int rc;
    char sql[100];
+
+   log_info("%s() function called", __func__);
 
    sprintf(sql, "SELECT * FROM Bill WHERE Name LIKE '\%%%s\%%';", keyword);
 
@@ -240,6 +256,8 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
    int rc;
    char sql[1000];
    Record record;
+
+   log_info("%s() function called", __func__);
 
    sprintf(sql, "SELECT * FROM Bill WHERE id = %d;", id);
 

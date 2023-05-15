@@ -22,8 +22,7 @@ static struct config {
    .db_name = "tbsys.db",
 };
 
-int main(int argc, char **argv) { // FIXME argc & argv
-
+int main(int argc, char **argv) { // TODO argc & argv support
    char input;
    sqlite3 *db;
    Record record;
@@ -46,11 +45,14 @@ int main(int argc, char **argv) { // FIXME argc & argv
     * The main loop
     */
    while (input != 'q') {
-      if (input == 'a') { // 'a' key
+      /*
+       * (a) Add new Record
+       */
+      if (input == 'a') {
          tbs_print("> Add new record...\n");
 
          tbs_print("> Name: ");
-         scanf(" %s", record.name);
+         scanf(" %50[^\n]", record.name);
          tbs_print("> Phone: ");
          // TODO code validation for logical phone inputs
          scanf(" %s", record.phone);
@@ -60,45 +62,67 @@ int main(int argc, char **argv) { // FIXME argc & argv
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
          tbs_db_bill_add(db, &record);
-         log_info("%s() function called", __func__);
-      } else if (input == 'c') { // 'c' key
+
+      /*
+       * (c) Add a complain
+       */
+      } else if (input == 'c') {
          int id;
          char complain[500];
          tbs_print("> ID: ");
          scanf(" %d", &id);
          tbs_print("> Complain (max 500 char): ");
-         scanf(" %500[^\n]", complain); // FIXME 500 hardcode
+         scanf(" %500[^\n]", complain);
          tbs_db_bill_complain(db, id, complain);
-         log_info("%s() function called", __func__);
          // TODO Print pretty table in terminal (add pretty table func)
-      } else if (input == 'd') { // 'd' key
+
+      /*
+       * (d) Delete a record
+       */
+      } else if (input == 'd') {
          int id = 0;
          tbs_print("> Delete record... id: ");
          scanf(" %d", &id);
          tbs_db_bill_remove(db, id);
-         log_info("%s() function called", __func__);
 
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
+
+      /*
+       * (h) help message
+       */
       } else if (input == 'h') { // 'h' key
          tbs_help_mgs();
+
+      /*
+       * (l) List all records
+       */
       } else if (input == 'l') { // 'l' key
          tbs_db_bill_select_all(db);
-         log_info("%s() function called", __func__);
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
+
+      /*
+       * (m) Modify a record
+       */
       } else if (input == 'm') { // 'm' key
          int id = 0;
          tbs_print("> Modify record... id: ");
          scanf(" %d", &id);
          tbs_db_bill_modify(db, id);
-         log_info("%s() function called", __func__);
+
+      /*
+       * (s) Search by name
+       */
       } else if (input == 's') { // 's' key
          tbs_print("> Search by: ");
          char keyword[20];
          scanf(" %s", keyword);
          tbs_db_bill_search(db, keyword);
-         log_info("%s() function called", __func__);
+
+      /*
+       * Command not found
+       */
       } else {
          tbs_print("Option (%c) not exist!\n", input);
          tbs_help_mgs();

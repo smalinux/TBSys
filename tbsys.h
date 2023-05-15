@@ -15,10 +15,10 @@ of this license document, but changing it is not allowed.
 #include <string.h>
 
 typedef struct Record {
-   char name[50];      // Client name
-   char phone[20];     // Phone number
+   char name[56];      // Client name - 50
+   char phone[24];     // Phone number - 20
    double price;       // Price
-   char complain[502]; // Complain
+   char complain[502]; // Complain - 500
 } Record;
 
 
