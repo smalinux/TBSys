@@ -1,4 +1,9 @@
 
+# Quick run using docker
+Just one command:
+``` bash
+docker run -it --rm smalinux/tbsys
+```
 
 
 ``` bash
@@ -15,13 +20,19 @@ doxygen
 
 
 ## TODO
-- [ ] Use [IWYU](https://github.com/include-what-you-use/include-what-you-use) [Leave it for now!]
+- [x] Add unit tests
 - [ ] Add `rxi/log` as git subtree
 - [ ] Add unit test to check if `rxi/log` is working
 - [x] Add log_info() to improve the code usability
 - [ ] Split `tbsys.[ch]` to more logical modules. (Leave it for now!) db.ch, message.ch, etc
 - [ ] Add GitHub actions for CI/CD
-- [ ] Support argc & argv to invoke `tbsys` as a script
+- [ ] Support argc & argv to invoke `tbsys` operations as a script
+- [x] Dockerizing TBSys
+- [x] Doxygen Support
+- [x] Input Validation (Almost done. skip it for now.)
+- [ ] Use [IWYU](https://github.com/include-what-you-use/include-what-you-use) [Leave it for now!]
+- [ ] Use OOP framework like [Maloc](http://fetk.org/codes/maloc/api/html/index.html)
+- [x] `astyle`
 
 <!--
 
