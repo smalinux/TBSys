@@ -12,6 +12,7 @@ of this license document, but changing it is not allowed.
 #include <stdlib.h>
 #include <string.h>
 
+#include "fort.h" // Pretty Print Tables
 #include "log.h"
 #include "tbsys.h"
 
@@ -60,14 +61,11 @@ int main(int argc, char **argv) { // TODO argc & argv support
          scanf(" %s", record.phone);
          tbs_print("> price: ");
          scanf(" %lf", &record.price);
-
-         // TODO Print pretty table in terminal (add pretty table func)
-         // and Sure? (Y/n)
          tbs_db_bill_add(db, &record);
 
-      /*
-       * (c) Add a complain
-       */
+         /*
+          * (c) Add a complain
+          */
       } else if (input == 'c') {
          int id;
          char complain[500];
@@ -78,9 +76,9 @@ int main(int argc, char **argv) { // TODO argc & argv support
          tbs_db_bill_complain(db, id, complain);
          // TODO Print pretty table in terminal (add pretty table func)
 
-      /*
-       * (d) Delete a record
-       */
+         /*
+          * (d) Delete a record
+          */
       } else if (input == 'd') {
          int id = 0;
          tbs_print("> Delete record... id: ");
@@ -90,41 +88,41 @@ int main(int argc, char **argv) { // TODO argc & argv support
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
 
-      /*
-       * (h) help message
-       */
+         /*
+          * (h) help message
+          */
       } else if (input == 'h') { // 'h' key
          tbs_help_mgs();
 
-      /*
-       * (l) List all records
-       */
+         /*
+          * (l) List all records
+          */
       } else if (input == 'l') { // 'l' key
          tbs_db_bill_select_all(db);
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
 
-      /*
-       * (m) Modify a record
-       */
+         /*
+          * (m) Modify a record
+          */
       } else if (input == 'm') { // 'm' key
          int id = 0;
          tbs_print("> Modify record... id: ");
          scanf(" %d", &id);
          tbs_db_bill_modify(db, id);
 
-      /*
-       * (s) Search by name
-       */
+         /*
+          * (s) Search by name
+          */
       } else if (input == 's') { // 's' key
          tbs_print("> Search by: ");
          char keyword[20];
          scanf(" %s", keyword);
          tbs_db_bill_search(db, keyword);
 
-      /*
-       * Command not found
-       */
+         /*
+          * Command not found
+          */
       } else {
          tbs_print("Option (%c) not exist!\n", input);
          tbs_help_mgs();

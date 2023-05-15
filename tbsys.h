@@ -38,5 +38,6 @@ int tbs_db_bill_search(sqlite3 *db, char *keyword);
 int tbs_db_bill_modify(sqlite3 *db, int id);
 
 void tbs_print(const char *format, ...);
+void tbs_print_table_onerow(int id, Record *record);
 
 #endif

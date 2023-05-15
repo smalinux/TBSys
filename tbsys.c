@@ -12,7 +12,9 @@ of this license document, but changing it is not allowed.
 #include <stdlib.h>
 #include <string.h>
 
+#include "fort.h" // Pretty Print Tables
 #include "log.h"
+
 #include "tbsys.h"
 
 
@@ -107,7 +109,8 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
    int last_id = sqlite3_last_insert_rowid(db);
    log_info("The last Id of the inserted row is %d\n", last_id);
 
-   // FIXME print the info of last added item here
+   /* Print one row table */
+   tbs_print_table_onerow(last_id, record);
 
    if (rc != SQLITE_OK ) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
@@ -273,6 +276,12 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
          record.complain,
          id);
 
+   // Print the last Id added to DB
+   int last_id = sqlite3_last_insert_rowid(db);
+
+   /* Print one row table */
+   tbs_print_table_onerow(last_id, &record);
+
    rc = sqlite3_exec(db, sql, 0, 0, &err_msg);
 
    if (rc != SQLITE_OK ) {
@@ -298,4 +307,19 @@ void tbs_print(const char *format, ...) {
 
 void tbs_print_options_menu(void) {
    tbs_print("Hit (a/c/d/h/l/m/s), h for help or q for exit: ");
+}
+
+void tbs_print_table_onerow(int id, Record *record) {
+   char price_buff[100];
+   char id_buff[100];
+
+   ft_table_t *table = ft_create_table();
+   ft_write_ln(table, "ID", "Name", "Phone", "Price", "Complain");
+
+   sprintf(price_buff, "%f", record->price);
+   sprintf(id_buff, "%d", id);
+
+   ft_write_ln(table, id_buff, record->name, record->phone, price_buff, record->complain);
+   printf("%s\n", ft_to_string(table));
+   ft_destroy_table(table);
 }
