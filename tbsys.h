@@ -23,6 +23,8 @@
 
 /**
  * @brief Record Object. each element represent one DB column
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  */
 typedef struct Record {
@@ -38,21 +40,29 @@ typedef struct Record {
 
 /**
  * @brief Print welcome ascii message
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  */
 void tbs_welcome_mgs(void);
 /**
  * @brief Print detailed help list
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  */
 void tbs_help_mgs(void);
 /**
  * @brief Print one line options
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  */
 void tbs_print_options_menu(void);
 /**
  * @brief Connect to the Database
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db_name database name
  * @return sqlite3* sqlite obj return value
@@ -60,6 +70,8 @@ void tbs_print_options_menu(void);
 sqlite3* tbs_db_connect(char* db_name);
 /**
  * @brief Close the database connection
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db databse name
  */
@@ -67,6 +79,8 @@ void tbs_db_disconnect(sqlite3* db);
 /**
  * @brief Create new table Called Bill
  * @details This function is too tolerant. will not overwrite the table if not exist
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db database name
  * @return int FIXME void?
@@ -74,6 +88,8 @@ void tbs_db_disconnect(sqlite3* db);
 int tbs_db_bill_new(sqlite3* db);
 /**
  * @brief Add new record to the Bill Table
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db databse name
  * @param record Record object
@@ -82,6 +98,8 @@ int tbs_db_bill_new(sqlite3* db);
 int tbs_db_bill_add(sqlite3* db, Record* record);
 /**
  * @brief Remove record from database
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db database name
  * @param id the ID to delete it
@@ -90,6 +108,8 @@ int tbs_db_bill_add(sqlite3* db, Record* record);
 int tbs_db_bill_remove(sqlite3* db, int id);
 /**
  * @brief list all Bill table records
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db
  * @return int
@@ -97,6 +117,8 @@ int tbs_db_bill_remove(sqlite3* db, int id);
 int tbs_db_bill_select_all(sqlite3* db);
 /**
  * @brief Add a complain to specific client
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db database handleer
  * @param id the id you want to attach
@@ -106,6 +128,8 @@ int tbs_db_bill_select_all(sqlite3* db);
 int tbs_db_bill_complain(sqlite3* db, int id, char* complain);
 /**
  * @brief Search by name or part of name
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db database handler
  * @param keyword the word to search by...
@@ -114,6 +138,8 @@ int tbs_db_bill_complain(sqlite3* db, int id, char* complain);
 int tbs_db_bill_search(sqlite3* db, char* keyword);
 /**
  * @brief Modify a record
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param db database handler
  * @param id the id you want to change
@@ -122,6 +148,8 @@ int tbs_db_bill_search(sqlite3* db, char* keyword);
 int tbs_db_bill_modify(sqlite3* db, int id);
 /**
  * @brief tbs print routine acts like printf
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param format
  * @param ...
@@ -129,6 +157,8 @@ int tbs_db_bill_modify(sqlite3* db, int id);
 void tbs_print(const char* format, ...);
 /**
  * @brief Print table contains just one row
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param id
  * @param record
@@ -136,6 +166,8 @@ void tbs_print(const char* format, ...);
 void tbs_print_table_onerow(int id, Record* record);
 /**
  * @brief Print complete table with many rows
+ * @details This is just a draft comment. Writing a real document for the APIs
+ * is an intensive task needs so much time. so I will skip that for now.
  *
  * @param total_rows integer number represt the total number of row
  * @param records records!
