@@ -1,16 +1,16 @@
-/** 
+/**
  * @file main.c
  * @author Sohaib Mohamed (sohaib.amhmd@gmail.com)
  * @brief Main.c file
  * @version 0.1
  * @date 2023-05-15
  * @page this file is main.c
- * 
+ *
  * @copyright Copyright (c) 2023
  * Released under the GNU GPLv2+,
  * Everyone is permitted to copy and distribute verbatim copies
  * of this license document, but changing it is not allowed.
- * 
+ *
  */
 #include <sqlite3.h>
 #include <stdarg.h>
@@ -31,9 +31,9 @@ static struct config {
    .db_connected = 0,
 };
 
-int main(int argc, char **argv) { // TODO argc & argv support
+int main(int argc, char** argv) { // TODO argc & argv support
    char input;
-   sqlite3 *db;
+   sqlite3* db;
    Record record;
 
    tbs_welcome_mgs();
@@ -48,7 +48,7 @@ int main(int argc, char **argv) { // TODO argc & argv support
    log_info("DB Table Bill is ready");
 
    tbs_print_options_menu();
-   scanf(" %c",&input);
+   scanf(" %c", &input);
 
    /*
     * The main loop
@@ -93,7 +93,7 @@ int main(int argc, char **argv) { // TODO argc & argv support
 
          // TODO Print pretty table in terminal (add pretty table func)
          // and Sure? (Y/n)
-         
+
          /*
           * (h) help message
           */

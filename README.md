@@ -2,8 +2,11 @@
 # Quick run using docker
 Just one command:
 ``` bash
+# https://hub.docker.com/r/smalinux/tbsys
 docker run -it --rm smalinux/tbsys
 ```
+
+
 
 
 ``` bash
@@ -13,6 +16,11 @@ apt install sqlite3
 apt install libsqlite3-dev
 ```
 
+If you want to automate formatting your code, the following command gives you a good baseline of how it should look:
+``` bash
+astyle -r -xb -s3 -p -xg -c -k1 -W1 -H \*.c \*.h
+```
+
 Generate docs
 ``` bash
 doxygen
@@ -20,7 +28,9 @@ doxygen
 
 
 ## TODO
-- [x] Add unit tests
+- [ ] Write perfect README to improve SEO
+- [ ] Add unit tests
+- [x] `astyle`
 - [ ] Add `rxi/log` as git subtree
 - [ ] Add unit test to check if `rxi/log` is working
 - [x] Add log_info() to improve the code usability
@@ -32,32 +42,18 @@ doxygen
 - [x] Input Validation (Almost done. skip it for now.)
 - [ ] Use [IWYU](https://github.com/include-what-you-use/include-what-you-use) [Leave it for now!]
 - [ ] Use OOP framework like [Maloc](http://fetk.org/codes/maloc/api/html/index.html)
-- [x] `astyle`
+
 
 <!--
 
 `
-https://cloudinfrastructureservices.co.uk/how-to-install-db-browser-for-sqlite-in-ubuntu-server-20-04/
 
 
-GitHub repo SEO:
--------------------
-description: tbsys written as technical interview test
 
 
 $ sqlite3
 -------------------
-read more about this tool
-integrate it with you bash scripts
-
-
-sqlite> .help
-
-
-create db using bash
----------------------
-$ sqlite3 test.db
-
+https://zetcode.com/db/sqlitec/
 
 
 

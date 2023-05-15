@@ -4,3 +4,5 @@ main
 tbsys
 err
 html/*
+
+*.orig
