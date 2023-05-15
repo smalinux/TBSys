@@ -113,7 +113,6 @@ int tbs_db_bill_add(sqlite3 *db, Record *record) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
       return 1;
    }
 
@@ -135,7 +134,6 @@ int tbs_db_bill_remove(sqlite3 *db, int id) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
       return 1;
    }
 
@@ -165,7 +163,6 @@ int tbs_db_bill_select_all(sqlite3 *db) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
       return 1;
    }
 
@@ -189,7 +186,6 @@ int tbs_db_bill_complain(sqlite3 *db, int id, char* complain) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
       return 1;
    }
 
@@ -222,7 +218,6 @@ int tbs_db_bill_search(sqlite3 *db, char* keyword) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
       return 1;
    }
 
@@ -230,20 +225,20 @@ int tbs_db_bill_search(sqlite3 *db, char* keyword) {
 }
 
 // catch the new values from user and send it back to tbs_db_bill_modify via userdata
-static int modify_view_callback(void *userdata, int argc, char **argv, char **azColName) {
+static int modify_view_callback(void *userdata, int argc, char **argv, char **col_name) {
    // Retrieve the user data pointer
    Record *data = (Record *)userdata;
 
    // TODO accept empty inputs... to skip
    for (int i = 0; i < argc; i++) {
-      tbs_print("%s (%s):\n", azColName[i], argv[i] ? argv[i] : "NULL");
-      if ((strcmp(azColName[i], "Name") == 0)) {
+      tbs_print("%s (%s):\n", col_name[i], argv[i] ? argv[i] : "NULL");
+      if ((strcmp(col_name[i], "Name") == 0)) {
          scanf("%s", data->name);
-      } else if ((strcmp(azColName[i], "Phone") == 0)) {
+      } else if ((strcmp(col_name[i], "Phone") == 0)) {
          scanf(" %s", data->phone);
-      } else if ((strcmp(azColName[i], "Price") == 0)) {
+      } else if ((strcmp(col_name[i], "Price") == 0)) {
          scanf(" %lf", &data->price);
-      } else if ((strcmp(azColName[i], "Complain") == 0)) {
+      } else if ((strcmp(col_name[i], "Complain") == 0)) {
          scanf(" %500[^\n]", data->complain);
       }
    }
@@ -267,7 +262,6 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
 
       return 1;
    }
@@ -285,7 +279,6 @@ int tbs_db_bill_modify(sqlite3 *db, int id) {
       log_error("SQL error: %s: %s\n", __func__, err_msg);
 
       sqlite3_free(err_msg);
-      sqlite3_close(db);
 
       return 1;
    }
@@ -306,4 +299,3 @@ void tbs_print(const char *format, ...) {
 void tbs_print_options_menu(void) {
    tbs_print("Hit (a/c/d/h/l/m/s), h for help or q for exit: ");
 }
-
