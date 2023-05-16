@@ -6,3 +6,4 @@ err
 html/*
 
 *.orig
+test.db
