@@ -289,15 +289,32 @@ static int modify_view_callback(void* userdata, int argc, char** argv, char** co
 
    // TODO accept empty inputs... to skip
    for (int i = 0; i < argc; i++) {
+      int ok;
       tbs_print("%s (%s):\n", col_name[i], argv[i] ? argv[i] : "NULL");
       if ((strcmp(col_name[i], "Name") == 0)) {
-         scanf("%s", data->name);
+         ok = scanf("%s", data->name);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            return 1;
+         }
       } else if ((strcmp(col_name[i], "Phone") == 0)) {
-         scanf(" %s", data->phone);
+         ok = scanf(" %s", data->phone);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            return 1;
+         }
       } else if ((strcmp(col_name[i], "Price") == 0)) {
-         scanf(" %lf", &data->price);
+         ok = scanf(" %lf", &data->price);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            return 1;
+         }
       } else if ((strcmp(col_name[i], "Complain") == 0)) {
-         scanf(" %500[^\n]", data->complain);
+         ok = scanf(" %500[^\n]", data->complain);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            return 1;
+         }
       }
    }
 

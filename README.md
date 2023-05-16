@@ -49,6 +49,7 @@ doxygen
 - [x] Doxygen Support
 - [x] `astyle`
 - [x] Input Validation (Almost done. skip it for now.)
+- [x] Check scanf return value: https://stackoverflow.com/q/7271939/5688267
 - [ ] Add unit tests
 - [x] logging support using `rxi/log`
 - [x] Use library to create formatted ASCII tables for console applications

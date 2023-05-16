@@ -35,6 +35,7 @@ int main(int argc, char** argv) { // TODO argc & argv support
    char input;
    sqlite3* db;
    Record record;
+   int ok;
 
    tbs_welcome_mgs();
    tbs_help_mgs();
@@ -48,7 +49,10 @@ int main(int argc, char** argv) { // TODO argc & argv support
    log_info("DB Table Bill is ready");
 
    tbs_print_options_menu();
-   scanf(" %c", &input);
+   ok = scanf(" %c", &input);
+   if (!ok) {
+      log_error("%s: Invalid input!", __func__);
+   }
 
    /*
     * The main loop
@@ -61,12 +65,22 @@ int main(int argc, char** argv) { // TODO argc & argv support
          tbs_print("> Add new record...\n");
 
          tbs_print("> Name: ");
-         scanf(" %50[^\n]", record.name);
+         ok = scanf(" %50[^\n]", record.name);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_print("> Phone: ");
          // TODO code validation for logical phone inputs (Leave it now)
-         scanf(" %s", record.phone);
+         ok = scanf(" %s", record.phone);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_print("> price: ");
-         scanf(" %lf", &record.price);
+         ok = scanf(" %lf", &record.price);
          tbs_db_bill_add(db, &record);
 
          /*
@@ -76,9 +90,19 @@ int main(int argc, char** argv) { // TODO argc & argv support
          int id;
          char complain[500];
          tbs_print("> ID: ");
-         scanf(" %d", &id);
+         ok = scanf(" %d", &id);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_print("> Complain (max 500 char): ");
-         scanf(" %500[^\n]", complain);
+         ok = scanf(" %500[^\n]", complain);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_db_bill_complain(db, id, complain);
          // TODO Print pretty table in terminal (add pretty table func)
 
@@ -88,7 +112,12 @@ int main(int argc, char** argv) { // TODO argc & argv support
       } else if (input == 'd') {
          int id = 0;
          tbs_print("> Delete record... id: ");
-         scanf(" %d", &id);
+         ok = scanf(" %d", &id);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_db_bill_remove(db, id);
 
          // TODO Print pretty table in terminal (add pretty table func)
@@ -114,7 +143,12 @@ int main(int argc, char** argv) { // TODO argc & argv support
       } else if (input == 'm') { // 'm' key
          int id = 0;
          tbs_print("> Modify record... id: ");
-         scanf(" %d", &id);
+         ok = scanf(" %d", &id);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_db_bill_modify(db, id);
 
          /*
@@ -123,7 +157,12 @@ int main(int argc, char** argv) { // TODO argc & argv support
       } else if (input == 's') { // 's' key
          tbs_print("> Search by: ");
          char keyword[20];
-         scanf(" %s", keyword);
+         ok = scanf(" %s", keyword);
+         if (!ok) {
+            log_error("%s: Invalid input!", __func__);
+            continue;
+         }
+
          tbs_db_bill_search(db, keyword);
 
          /*
@@ -135,7 +174,11 @@ int main(int argc, char** argv) { // TODO argc & argv support
       }
 
       tbs_print_options_menu();
-      scanf(" %c", &input);
+      ok = scanf(" %c", &input);
+      if (!ok) {
+         log_error("%s: Invalid input!", __func__);
+         continue;
+      }
    }
 
    // Close DB Connect
