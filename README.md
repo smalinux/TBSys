@@ -66,6 +66,7 @@ doxygen
 <!--
 
 `
+sometimes `make --debug=b` is nice for debugging the Makefile.
 
 
 

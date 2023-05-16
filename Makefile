@@ -1,14 +1,15 @@
 CC = gcc
-CFLAGS = -O2 -DNDEBUG -DLOG_USE_COLOR -std=c99
-CLIB = -lsqlite3
+CFLAGS = -O2 -g -Wall -DNDEBUG -DLOG_USE_COLOR -std=c99
+LIBS = -lsqlite3
 OBJ = main.o log.o tbsys.o fort.o
+BIN = tbsys
 
 %.o: %.c $(DEPS)
 	$(CC) -c -o $@ $< $(CFLAGS)
 
-tbsys: $(OBJ)
-	$(CC) -o $@ $^ $(CLIB) $(CFLAGS)
+$(BIN): $(OBJ)
+	$(CC) -o $@ $^ $(LIBS) $(CFLAGS)
 
 clean:
-	rm *.o
-	rm tbsys
+	$(RM) *.o
+	$(RM) tbsys
